@@ -55,9 +55,8 @@ public class BloomFilterFNV {
         String data = s + i;
         byte[] byteArray = data.getBytes();
         long init = fnvInit;
-        final int len = byteArray.length;
-        for(int j = 0; j < len; j++) {
-            init ^= byteArray[j];
+        for (byte b : byteArray) {
+            init ^= b;
             init *= fnvPrime;
         }
         return init;
