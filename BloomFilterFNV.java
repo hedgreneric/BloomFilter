@@ -36,7 +36,7 @@ public class BloomFilterFNV {
     }
 
     public int filterSize() {
-        return setSize/bitsPerElement;
+        return setSize*bitsPerElement;
     }
 
     public int dataSize() {
@@ -54,12 +54,13 @@ public class BloomFilterFNV {
     public static long hash(String s, int i){
         String data = s + i;
         byte[] byteArray = data.getBytes();
+        long init = fnvInit;
         final int len = byteArray.length;
         for(int j = 0; j < len; j++) {
-            fnvInit ^= byteArray[j];
-            fnvInit *= fnvPrime;
+            init ^= byteArray[j];
+            init *= fnvPrime;
         }
-        return fnvInit;
+        return init;
     }
 
 
