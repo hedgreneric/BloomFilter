@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.BitSet;
+import java.math.BigInteger;
 
 public class BloomFilterFNV {
     public int setSize;
@@ -10,9 +11,11 @@ public class BloomFilterFNV {
 
     public int dataSize;
 
-    static long fnvInit = 0xcbf29ce484222325L;
+//    static long fnvInit = 0xcbf29ce484222325L;
+//    static long offsetBasis = 14695981039346656037L;
 
-    static long fnvPrime = 0x100000001b3L;
+    static BigInteger offsetBasis = new BigInteger("14695981039346656037");
+    static long fnvPrime = 0x3bL;
 
 
     public BloomFilterFNV(int setSize, int bitsPerElement) {
@@ -25,7 +28,7 @@ public class BloomFilterFNV {
     public void add (String s){
         s = s.toLowerCase();
         for(int i = 0; i < numHashes(); i++){
-            int index = (int) hash(s, i);
+            int index = fnvHash(s, i).intValue();
             bitArray.set(index);
         }
         dataSize++;
@@ -51,15 +54,28 @@ public class BloomFilterFNV {
         return true;
     }
 
-    public static long hash(String s, int i){
-        String data = s + i;
-        byte[] byteArray = data.getBytes();
-        long init = fnvInit;
-        for (int j = 0; j < data.length(); j++) {
-            init = data.charAt(j) ^ init;
-            init *= ((init * fnvPrime) % Math.pow(2, 64));
+//    public static long hash(String s, int i){
+//        String data = s + i;
+//        byte[] byteArray = data.getBytes();
+//        long init = fnvInit;
+//        for (int j = 0; j < data.length(); j++) {
+//            init = data.charAt(j) ^ init;
+//            init *= ((init * fnvPrime) % Math.pow(2, 64));
+//        }
+//        return init;
+//    }
+
+    public static BigInteger fnvHash (String s, int i) {
+        String data = s;
+        BigInteger hash = offsetBasis;
+        BigInteger bigIntFnvPrime = BigInteger.valueOf(fnvPrime);
+        byte[] byteArr = data.getBytes();
+        for (byte b : byteArr){
+            BigInteger bigIntByte = BigInteger.valueOf(b);
+            hash = hash.multiply(bigIntFnvPrime);
+            hash = bigIntByte.xor(hash);
         }
-        return init;
+        return hash;
     }
 
 
