@@ -31,11 +31,15 @@ public class BloomFilterFNV {
             int index = fnvHash(s, i).intValue();
             bitArray.set(index);
         }
-        dataSize++;
+        if (!appears(s)) {
+            dataSize++;
+        }
     }
 
     public boolean appears (String s){
-        return true;
+        BigInteger index = fnvHash(s, 0);
+
+        return bitArray.get(index.intValue());
     }
 
     public int filterSize() {
@@ -54,17 +58,6 @@ public class BloomFilterFNV {
         return true;
     }
 
-//    public static long hash(String s, int i){
-//        String data = s + i;
-//        byte[] byteArray = data.getBytes();
-//        long init = fnvInit;
-//        for (int j = 0; j < data.length(); j++) {
-//            init = data.charAt(j) ^ init;
-//            init *= ((init * fnvPrime) % Math.pow(2, 64));
-//        }
-//        return init;
-//    }
-
     public static BigInteger fnvHash (String s, int i) {
         String data = s;
         BigInteger hash = offsetBasis;
@@ -77,6 +70,4 @@ public class BloomFilterFNV {
         }
         return hash;
     }
-
-
 }

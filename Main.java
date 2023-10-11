@@ -1,8 +1,9 @@
 public class Main {
 
     public static void main(String args[]){
-        BloomFilterFNV bf = new BloomFilterFNV(100, 10);
+        BloomFilterFNV bf = new BloomFilterFNV(1, 1);
         bf.add("Afwfe");
+        System.out.println(bf.appears("afe"));
         System.out.println(bf.bitArray);
         bf.add("B");
         System.out.println((bf.bitArray));
