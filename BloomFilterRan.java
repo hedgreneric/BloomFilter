@@ -22,11 +22,13 @@ public class BloomFilterRan {
     public void add (String s){
         s = s.toLowerCase();
         double x = numHashes();
+        if (!this.appears(s)){
+            dataSize++;
+        }
         for(int i = 0; i < numHashes(); i++){
-            int index = ranHash(s, i);
+            int index = ranHash(s, i)%filterSize();
             bitArray.set(index);
         }
-        dataSize++;
     }
 
     public boolean appears (String s){
@@ -34,7 +36,7 @@ public class BloomFilterRan {
         double x = numHashes();
         boolean flag = true;
         for(int i = 0; i < numHashes(); i++){
-            int index = ranHash(s, i);
+            int index = ranHash(s, i)%filterSize();
             if (this.getBit(index) == false){
                    flag = false;
             }
