@@ -6,6 +6,7 @@ public class Main2 {
             String word = "hi" + i;
             bf.add(word);
         }
-        System.out.println(bf.appears("hi1000"));
+        System.out.println(bf.bitArray);
+        System.out.println(bf.appears("hi111"));
     }
 }
