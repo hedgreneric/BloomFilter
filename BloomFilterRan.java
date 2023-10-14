@@ -26,7 +26,7 @@ public class BloomFilterRan {
             dataSize++;
         }
         for(int i = 0; i < numHashes(); i++){
-            int index = ranHash(s, i)%filterSize();
+            int index = ranHash(s, i);
             bitArray.set(index);
         }
     }
@@ -34,14 +34,16 @@ public class BloomFilterRan {
     public boolean appears (String s){
         s = s.toLowerCase();
         double x = numHashes();
-        boolean flag = true;
+        int finalIndex = 0;
+        int numTimes = 0;
         for(int i = 0; i < numHashes(); i++){
-            int index = ranHash(s, i)%filterSize();
-            if (this.getBit(index) == false){
-                   flag = false;
+            int index = ranHash(s, i);
+            if (this.getBit(index) == true){
+                   numTimes++;
             }
+            finalIndex++;
         }
-        return flag;
+        return numTimes == finalIndex;
     }
 
     public int filterSize() {
