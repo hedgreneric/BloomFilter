@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.math.BigInteger;
@@ -13,6 +14,8 @@ public class BloomFilterFNV {
 
     static BigInteger offsetBasis = new BigInteger("14695981039346656037");
     static BigInteger fnvPrime = new BigInteger("109951168211");
+
+    ArrayList<String> items = new ArrayList<String>();
 
 
     public BloomFilterFNV(int setSize, int bitsPerElement) {
@@ -31,6 +34,7 @@ public class BloomFilterFNV {
             int index = fnvHash(s, i);
             bitArray.set(index);
         }
+        items.add(s);
     }
 
     public boolean appears (String s){
