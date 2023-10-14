@@ -22,8 +22,10 @@ public class BloomFilterRanPlus {
     public void add (String s){
         s = s.toLowerCase();
         double x = numHashes();
+        double y = filterSize();
         for(int i = 0; i < numHashes(); i++){
-            int index = ranHash(s, i)%filterSize();
+            int index = ranHash(s, i);
+            index = Math.abs(index);
             bitArray.set(index);
         }
         dataSize++;
@@ -32,14 +34,17 @@ public class BloomFilterRanPlus {
     public boolean appears (String s){
         s = s.toLowerCase();
         double x = numHashes();
-        boolean flag = true;
+        int finalIndex = 0;
+        int numTimes = 0;
         for(int i = 0; i < numHashes(); i++){
-            int index = ranHash(s, i)%filterSize();
-            if (this.getBit(index) == false){
-                flag = false;
+            int index = ranHash(s, i);
+            index = Math.abs(index);
+            if (this.getBit(index) == true){
+                numTimes++;
             }
+            finalIndex++;
         }
-        return flag;
+        return numTimes == finalIndex;
     }
 
     public int filterSize() {
@@ -63,7 +68,7 @@ public class BloomFilterRanPlus {
         int p = findPrimeLargerThanM(m, i);
         int x = s.hashCode()%p;
         x = Math.abs(x);
-        Random rand = new Random(i);
+        Random rand = new Random(x*i);
         int a = rand.nextInt(p);
         int b = rand.nextInt(p);
         int c = rand.nextInt(p);
@@ -74,9 +79,9 @@ public class BloomFilterRanPlus {
 
     public int findPrimeLargerThanM(int m, int i){
         Random rand = new Random(i);
-        int prime = rand.nextInt(100) + m;
+        int prime = rand.nextInt(m) + m;
         while(!isPrime(prime)){
-            prime = rand.nextInt(100) + m;
+            prime = rand.nextInt(m) + m;
         }
         return prime;
     }
