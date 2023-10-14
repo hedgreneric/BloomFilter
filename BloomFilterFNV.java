@@ -11,11 +11,8 @@ public class BloomFilterFNV {
 
     public int dataSize;
 
-//    static long fnvInit = 0xcbf29ce484222325L;
-//    static long offsetBasis = 14695981039346656037L;
-
     static BigInteger offsetBasis = new BigInteger("14695981039346656037");
-    static long fnvPrime = 0x3bL;
+    static BigInteger fnvPrime = new BigInteger("109951168211");
 
 
     public BloomFilterFNV(int setSize, int bitsPerElement) {
@@ -27,19 +24,28 @@ public class BloomFilterFNV {
 
     public void add (String s){
         s = s.toLowerCase();
-        for(int i = 0; i < numHashes(); i++){
-            int index = fnvHash(s, i).intValue();
-            bitArray.set(index);
-        }
         if (!appears(s)) {
             dataSize++;
+        }
+        for(int i = 0; i < numHashes(); i++){
+            int index = fnvHash(s, i);
+            bitArray.set(index);
         }
     }
 
     public boolean appears (String s){
-        BigInteger index = fnvHash(s, 0);
-
-        return bitArray.get(index.intValue());
+        s = s.toLowerCase();
+        double x = numHashes();
+        int finalIndex = 0;
+        int numTimes = 0;
+        for(int i = 0; i < numHashes(); i++){
+            int index = fnvHash(s, i);
+            if (this.getBit(index)){
+                numTimes++;
+            }
+            finalIndex++;
+        }
+        return numTimes == finalIndex;
     }
 
     public int filterSize() {
@@ -55,19 +61,19 @@ public class BloomFilterFNV {
     }
 
     public boolean getBit(int j){
-        return true;
+        return bitArray.get(j);
     }
 
-    public static BigInteger fnvHash (String s, int i) {
-        String data = s;
+    public int fnvHash (String s, int i) {
+        String data;
         BigInteger hash = offsetBasis;
-        BigInteger bigIntFnvPrime = BigInteger.valueOf(fnvPrime);
-        byte[] byteArr = data.getBytes();
-        for (byte b : byteArr){
-            BigInteger bigIntByte = BigInteger.valueOf(b);
-            hash = hash.multiply(bigIntFnvPrime);
-            hash = bigIntByte.xor(hash);
+        for (int j = 0; j < s.length(); j++){
+            char character = s.charAt(j);
+            data = String.valueOf(character + i);
+            int hashcode = data.hashCode();
+            hash = BigInteger.valueOf(hashcode).xor(hash);
+            hash = hash.multiply(fnvPrime);
         }
-        return hash;
+        return Math.abs(hash.intValue()%filterSize());
     }
 }

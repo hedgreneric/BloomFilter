@@ -1,13 +1,12 @@
 public class Main {
 
     public static void main(String args[]){
-        BloomFilterFNV bf = new BloomFilterFNV(1, 1);
-        bf.add("Afwfe");
-        System.out.println(bf.appears("afe"));
+        BloomFilterFNV bf = new BloomFilterFNV(100, 10);
+        for (int i = 0; i < 100; i++){
+            String word = "hi" + i;
+            bf.add(word);
+        }
         System.out.println(bf.bitArray);
-        bf.add("B");
-        System.out.println((bf.bitArray));
-        bf.add("b");
-        System.out.println((bf.bitArray));
+        System.out.println(bf.appears("hi100"));
     }
 }
