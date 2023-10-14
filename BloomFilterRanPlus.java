@@ -1,51 +1,50 @@
+import java.util.Arrays;
 import java.util.BitSet;
+import java.math.BigInteger;
 import java.util.Random;
 
-public class MultiMultiBloomFilter {
+public class BloomFilterRanPlus {
     public int setSize;
 
     public int bitsPerElement;
 
-    BitSet[] multiBitArr;
     public BitSet bitArray;
 
     public int dataSize;
 
-    public MultiMultiBloomFilter(int setSize, int bitsPerElement) {
+    public BloomFilterRanPlus(int setSize, int bitsPerElement) {
         this.setSize = setSize;
         this.bitsPerElement = bitsPerElement;
-        multiBitArr = new BitSet[(int) Math.ceil(numHashes())];
-        for (int i = 0; i < numHashes(); i++) {
-            multiBitArr[i] = new BitSet(setSize);
-        }
+        bitArray = new BitSet(filterSize());
         dataSize = 0;
     }
 
     public void add (String s){
         s = s.toLowerCase();
         double x = numHashes();
-        if (!this.appears(s)) {
-            dataSize++;
-        }
-
+        double y = filterSize();
         for(int i = 0; i < numHashes(); i++){
-            int index = mmHash(s, i);
-            multiBitArr[i].set(index);
+            int index = ranHash(s, i);
+            index = Math.abs(index);
+            bitArray.set(index);
         }
-
+        dataSize++;
     }
 
     public boolean appears (String s){
         s = s.toLowerCase();
         double x = numHashes();
-        boolean flag = true;
+        int finalIndex = 0;
+        int numTimes = 0;
         for(int i = 0; i < numHashes(); i++){
-            int index = mmHash(s, i);
-            if (!this.getBit(index, i)){
-                flag = false;
+            int index = ranHash(s, i);
+            index = Math.abs(index);
+            if (this.getBit(index)){
+                numTimes++;
             }
+            finalIndex++;
         }
-        return flag;
+        return numTimes == finalIndex;
     }
 
     public int filterSize() {
@@ -60,21 +59,22 @@ public class MultiMultiBloomFilter {
         return (Math.log(2) * filterSize()) / setSize;
     }
 
-    public boolean getBit(int index, int k) {
-        return multiBitArr[k].get(index);
+    public boolean getBit(int j){
+        return bitArray.get(j);
     }
 
-    public int mmHash (String s, int i) {
+    public int ranHash (String s, int i) {
         int m = this.filterSize();
         int p = findPrimeLargerThanM(m, i);
         int x = s.hashCode()%p;
         x = Math.abs(x);
-
         Random rand = new Random(x*i);
         int a = rand.nextInt(p);
         int b = rand.nextInt(p);
+        int c = rand.nextInt(p);
 
-        return (a * x + b)%p;
+
+        return ((a * x * x) + (b * x) + c)%p;
     }
 
     public int findPrimeLargerThanM(int m, int i){
@@ -95,4 +95,6 @@ public class MultiMultiBloomFilter {
         }
         return flag;
     }
+
 }
+
