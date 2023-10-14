@@ -24,11 +24,15 @@ public class MultiMultiBloomFilter {
     public void add (String s){
         s = s.toLowerCase();
         double x = numHashes();
+        if (!this.appears(s)) {
+            dataSize++;
+        }
+
         for(int i = 0; i < numHashes(); i++){
             int index = mmHash(s, i);
             multiBitArr[i].set(index);
         }
-        dataSize++;
+
     }
 
     public boolean appears (String s){
