@@ -39,7 +39,7 @@ public class BloomFilterRanPlus {
         for(int i = 0; i < numHashes(); i++){
             int index = ranHash(s, i);
             index = Math.abs(index);
-            if (this.getBit(index) == true){
+            if (this.getBit(index)){
                 numTimes++;
             }
             finalIndex++;
