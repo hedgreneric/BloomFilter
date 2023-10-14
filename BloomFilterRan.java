@@ -38,7 +38,7 @@ public class BloomFilterRan {
         int numTimes = 0;
         for(int i = 0; i < numHashes(); i++){
             int index = ranHash(s, i);
-            if (this.getBit(index) == true){
+            if (this.getBit(index)){
                    numTimes++;
             }
             finalIndex++;
@@ -76,9 +76,9 @@ public class BloomFilterRan {
 
     public int findPrimeLargerThanM(int m, int i){
         Random rand = new Random(i);
-        int prime = rand.nextInt(100) + m;
+        int prime = rand.nextInt(m) + m;
         while(!isPrime(prime)){
-            prime = rand.nextInt(100) + m;
+            prime = rand.nextInt(m) + m;
         }
         return prime;
     }
