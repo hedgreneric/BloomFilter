@@ -14,9 +14,9 @@ public class MultiMultiBloomFilter {
     public MultiMultiBloomFilter(int setSize, int bitsPerElement) {
         this.setSize = setSize;
         this.bitsPerElement = bitsPerElement;
-        multiBitArr = new BitSet[filterSize()];
-        for (int i = 0; i < filterSize(); i++) {
-            multiBitArr[i] = new BitSet();
+        multiBitArr = new BitSet[(int) Math.ceil(numHashes())];
+        for (int i = 0; i < numHashes(); i++) {
+            multiBitArr[i] = new BitSet(setSize);
         }
         dataSize = 0;
     }
@@ -37,7 +37,7 @@ public class MultiMultiBloomFilter {
         boolean flag = true;
         for(int i = 0; i < numHashes(); i++){
             int index = mmHash(s, i);
-            if (this.getBit(index) == false){
+            if (!this.getBit(index, i)){
                 flag = false;
             }
         }
@@ -56,34 +56,28 @@ public class MultiMultiBloomFilter {
         return (Math.log(2) * filterSize()) / setSize;
     }
 
-    public boolean getBit(int j) {
-        for (int i = 0; i < filterSize(); i++) {
-            if (!multiBitArr[i].get(j)){
-                return false;
-            }
-        }
-        return true;
+    public boolean getBit(int index, int k) {
+        return multiBitArr[k].get(index);
     }
 
     public int mmHash (String s, int i) {
         int m = this.filterSize();
         int p = findPrimeLargerThanM(m, i);
-        int x = s.hashCode();
+        int x = s.hashCode()%p;
         x = Math.abs(x);
 
-        // the first iteration i=0, but i must be positive
-        Random rand = new Random(i);
-        int a = rand.nextInt(i+1);
-        int b = rand.nextInt(i+1);
+        Random rand = new Random(x*i);
+        int a = rand.nextInt(p);
+        int b = rand.nextInt(p);
 
         return (a * x + b)%p;
     }
 
     public int findPrimeLargerThanM(int m, int i){
         Random rand = new Random(i);
-        int prime = rand.nextInt(100) + m;
+        int prime = rand.nextInt(m) + m;
         while(!isPrime(prime)){
-            prime = rand.nextInt(100) + m;
+            prime = rand.nextInt(m) + m;
         }
         return prime;
     }

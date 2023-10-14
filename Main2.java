@@ -5,7 +5,8 @@ public class Main2 {
         for (int i = 0; i < 100; i++){
             String word = "hi" + i;
             bf.add(word);
+
         }
-        System.out.println(bf.appears("hi1000"));
+        System.out.println(bf.appears("hi69"));
     }
 }
