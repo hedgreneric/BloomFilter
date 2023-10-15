@@ -19,6 +19,7 @@ public class BloomDifferential {
             scan.nextLine();
             diffCount++;
         }
+        scan.close();
         this.filter = createFilter();
     }
 
@@ -30,6 +31,7 @@ public class BloomDifferential {
             filter.add(element);
             scan.nextLine();
         }
+        scan.close();
         return filter;
     }
 
@@ -43,6 +45,7 @@ public class BloomDifferential {
                     return record;
                 }
             }
+            scan.close();
         }
         return null;
     }
