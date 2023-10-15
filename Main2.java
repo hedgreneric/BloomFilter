@@ -1,19 +1,21 @@
 public class Main2 {
 
     public static void main(String args[]){
-        BloomFilterRanPlus bf = new BloomFilterRanPlus(1000, 50);
-        for (int i = 0; i < 1000; i++){
+        BloomFilterFNV bf = new BloomFilterFNV(100, 10);
+        for (int i = 0; i < 100; i++){
             String word = "hi" + i;
             bf.add(word);
         }
-        System.out.println(bf.bitArray);
-        System.out.println(bf.appears("hi1"));
-        int falsePositives = 0;
-//        for (int i = 0; i < 100000; i++){
-//            if (bf.appears("Does this somehow fit" + i)){
-//                falsePositives++;
-//            }
-//        }
-        System.out.println(falsePositives);
+
+        FalsePositives fp = new FalsePositives(bf);
+        for (int i = 0; i < 1000; i++){
+            String word = "hello" + i;
+            fp.check(word);
+        }
+        System.out.println("Report: ");
+        System.out.println("Checks: " + fp.getTotalChecks());
+        System.out.println("False Positives: " + fp.getFalsePositives());
+        System.out.println("False Positive Rate: " + fp.getFalsePositiveRate());
+
     }
 }
