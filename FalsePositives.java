@@ -24,5 +24,12 @@ public class FalsePositives {
         return (double) falsePositives / totalChecks;
     }
 
+    public int getTotalChecks(){
+        return totalChecks;
+    }
+    public int getFalsePositives(){
+        return falsePositives;
+    }
+
 
 }
