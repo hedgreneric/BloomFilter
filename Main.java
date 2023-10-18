@@ -1,7 +1,7 @@
 public class Main {
 
     public static void main(String args[]){
-        BloomFilterFNV bf = new BloomFilterFNV(100, 10);
+        MultiMultiBloomFilter bf = new MultiMultiBloomFilter(100, 10);
         for (int i = 0; i < 100; i++){
             String word = "hi" + i;
             bf.add(word);
@@ -10,7 +10,7 @@ public class Main {
         System.out.println(bf.appears("hi100"));
 
 
-        BloomFilterFNV bf2 = new BloomFilterFNV(100, 10);
+        MultiMultiBloomFilter bf2 = new MultiMultiBloomFilter(100, 10);
         for (int i = 100; i < 200; i++){
             String word = "hi" + i;
             bf2.add(word);
