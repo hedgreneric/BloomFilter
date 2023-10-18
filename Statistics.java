@@ -15,8 +15,6 @@ public class Statistics<T> {
         this.f2 = f2;
     }
 
-
-
     /*
     BloomFilterFNV
      */
