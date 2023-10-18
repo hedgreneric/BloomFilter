@@ -155,12 +155,18 @@ public class Statistics<T> {
         int m = f.filterSize();
         int k = (int) Math.ceil(f.numHashes());
         int Z = 0;
-        for (int j = 0; j < k; j++) {
-            for (int i = 0; i < m; i++) {
-                if (!f.getBit(i, j)) {
-                    Z++;
+        boolean containsI = false;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < k; j++) {
+                if (f.getBit(i, j)) {
+                    containsI = true;
                 }
+                System.out.println((f.getBit(i, j)));
             }
+            if (!containsI) {
+                Z++;
+            }
+            System.out.println("new i\n");
         }
         return (int) (-m / (double) k * log(1 - Z / (double) m));
 
