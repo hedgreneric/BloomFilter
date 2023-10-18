@@ -74,7 +74,7 @@ public class MultiMultiBloomFilter {
         int a = rand.nextInt(p);
         int b = rand.nextInt(p);
 
-        return (a * x + b)%p;
+        return ((a * x + b)%p)%setSize;
     }
 
     public int findPrimeLargerThanM(int m, int i){

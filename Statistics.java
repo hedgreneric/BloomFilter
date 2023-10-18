@@ -1,3 +1,5 @@
+import java.util.BitSet;
+
 import static java.lang.Math.log;
 
 public class Statistics<T> {
@@ -151,24 +153,23 @@ public class Statistics<T> {
     /*
     MultiMultiBloomFilter
      */
-    public static int estimateSetSize (MultiMultiBloomFilter f) {
+    public static double estimateSetSize (MultiMultiBloomFilter f) {
         int m = f.filterSize();
+        int n = f.multiBitArr[0].length();
+        BitSet arr = f.multiBitArr[0];
         int k = (int) Math.ceil(f.numHashes());
-        int Z = 0;
+        double Z = 0;
         boolean containsI = false;
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < n; i++) {
             for (int j = 0; j < k; j++) {
-                if (f.getBit(i, j)) {
-                    containsI = true;
+                if (!f.getBit(i, j)) {
+                    Z++;
                 }
-                System.out.println((f.getBit(i, j)));
             }
-            if (!containsI) {
-                Z++;
-            }
-            System.out.println("new i\n");
         }
-        return (int) (-m / (double) k * log(1 - Z / (double) m));
+        double firstPart = -n/k;
+        double secondPart = Math.log(1 - (Z / (k*n)));
+        return firstPart * secondPart;
 
     }
 
