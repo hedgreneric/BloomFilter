@@ -1,21 +1,54 @@
 import java.util.BitSet;
 import java.util.Arrays;
 
-public class FalsePositives {
+public class FalsePositives<T> {
 
-    BloomFilterFNV bfFNV;
+    T bf;
     private int falsePositives;
     private int totalChecks;
 
-    public FalsePositives(BloomFilterFNV bf){
-        this.bfFNV = bf;
+    public FalsePositives(T bf){
+        this.bf = bf;
         this.falsePositives = 0;
         this.totalChecks = 0;
     }
 
-    public void check(String s) {
+    /*
+    BloomFilterFNV
+     */
+    public void check(String s, BloomFilterFNV bf) {
         totalChecks++;
-        if (bfFNV.appears(s) && !bfFNV.items.contains(s)) {
+        if (bf.appears(s) && !bf.items.contains(s)) {
+            falsePositives++;
+        }
+    }
+
+    /*
+    BloomFilterRan
+     */
+    public void check(String s, BloomFilterRan bf) {
+        totalChecks++;
+        if (bf.appears(s) && !bf.items.contains(s)) {
+            falsePositives++;
+        }
+    }
+
+    /*
+    BloomFilterRanPlus
+     */
+    public void check(String s, BloomFilterRanPlus bf) {
+        totalChecks++;
+        if (bf.appears(s) && !bf.items.contains(s)) {
+            falsePositives++;
+        }
+    }
+
+    /*
+    MultiMultiBloomFilter
+     */
+    public void check(String s, MultiMultiBloomFilter bf) {
+        totalChecks++;
+        if (bf.appears(s) && !bf.items.contains(s)) {
             falsePositives++;
         }
     }

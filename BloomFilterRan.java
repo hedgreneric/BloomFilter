@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.math.BigInteger;
@@ -11,6 +12,7 @@ public class BloomFilterRan {
     public BitSet bitArray;
 
     public int dataSize;
+    ArrayList<String> items = new ArrayList<String>();
 
     public BloomFilterRan(int setSize, int bitsPerElement) {
         this.setSize = setSize;
@@ -21,7 +23,6 @@ public class BloomFilterRan {
 
     public void add (String s){
         s = s.toLowerCase();
-        double x = numHashes();
         if (!this.appears(s)){
             dataSize++;
         }
@@ -29,6 +30,7 @@ public class BloomFilterRan {
             int index = ranHash(s, i);
             bitArray.set(index);
         }
+        items.add(s);
     }
 
     public boolean appears (String s){
