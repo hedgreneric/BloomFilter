@@ -76,9 +76,9 @@ public class BloomFilterRan {
 
     public int findPrimeLargerThanM(int m, int i){
         Random rand = new Random(i);
-        int prime = rand.nextInt(m) + m;
+        int prime = rand.nextInt(m/2) + m;
         while(!isPrime(prime)){
-            prime = rand.nextInt(m) + m;
+            prime = rand.nextInt(m/2) + m;
         }
         return prime;
     }
