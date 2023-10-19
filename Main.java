@@ -18,7 +18,6 @@ public class Main {
         //System.out.println(bf.bitArray);
         System.out.println(bf2.appears("hi100"));
 
-
         System.out.println(Statistics.estimateSetSize(bf));
         System.out.println(Statistics.estimateIntersectSize(bf, bf2));
 
