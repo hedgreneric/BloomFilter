@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Random;
 
@@ -10,6 +11,7 @@ public class MultiMultiBloomFilter {
     public BitSet bitArray;
 
     public int dataSize;
+    ArrayList<String> items = new ArrayList<String>();
 
     public MultiMultiBloomFilter(int setSize, int bitsPerElement) {
         this.setSize = setSize;
@@ -32,7 +34,7 @@ public class MultiMultiBloomFilter {
             int index = mmHash(s, i);
             multiBitArr[i].set(index);
         }
-
+        items.add(s);
     }
 
     public boolean appears (String s){
