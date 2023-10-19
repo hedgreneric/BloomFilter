@@ -64,16 +64,28 @@ public class BloomFilterRan {
         return bitArray.get(j);
     }
 
+//    public int ranHash (String s, int i) {
+//        int m = this.filterSize();
+//        int p = findPrimeLargerThanM(m, i);
+//        int x = s.hashCode()%p;
+//        x = Math.abs(x);
+//        Random rand = new Random(i);
+//        int a = rand.nextInt(p);
+//        int b = rand.nextInt(p);
+//
+//        return (a * x + b)%p;
+//    }
+
     public int ranHash (String s, int i) {
         int m = this.filterSize();
         int p = findPrimeLargerThanM(m, i);
         int x = s.hashCode()%p;
-        x = Math.abs(x);
+        BigInteger y = BigInteger.valueOf(Math.abs(x));
         Random rand = new Random(i);
-        int a = rand.nextInt(p);
-        int b = rand.nextInt(p);
+        BigInteger a = BigInteger.valueOf(rand.nextInt(p));
+        BigInteger b = BigInteger.valueOf(rand.nextInt(p));
 
-        return (a * x + b)%p;
+        return (a.multiply(y).add(b).mod(BigInteger.valueOf(p)).intValue());
     }
 
     public int findPrimeLargerThanM(int m, int i){
