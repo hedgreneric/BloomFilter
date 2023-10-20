@@ -17,11 +17,11 @@ public class EmpericalComparison {
 
     public boolean isBloomFasterThanNaive(String key, BloomDifferential bloom, NaiveDifferential naive) throws FileNotFoundException {
         long start = System.nanoTime();
-        bloom.retrieveRecord(key);
+        System.out.println(bloom.retrieveRecord(key));
         long end = System.nanoTime();
         long bloomDuration = (start - end);
         start = System.nanoTime();
-        naive.retrieveRecord(key);
+        System.out.println(naive.retrieveRecord(key));
         end = System.nanoTime();
         long naiveDuration = (start - end);
         System.out.println("Bloom Duration: " + bloomDuration);

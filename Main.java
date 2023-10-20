@@ -21,8 +21,8 @@ public class Main {
 //
 //        System.out.println(Statistics.estimateSetSize(bf));
 //        System.out.println(Statistics.estimateIntersectSize(bf, bf2));
-        File f = new File();
-        File f1 = new File();
+        File f = new File("C:\\Users\\hedgr_v6euno5\\git-repos-isu\\pa1Data\\database.txt\\database.txt");
+        File f1 = new File("C:\\Users\\hedgr_v6euno5\\git-repos-isu\\pa1Data\\DiffFile.txt\\DiffFile.txt");
         EmpericalComparison e = new EmpericalComparison(f, f1);
         e.isBloomFasterThanNaive("ARE THE GOALS OF", e.bd, e.nd);
 
