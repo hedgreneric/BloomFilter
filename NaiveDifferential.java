@@ -20,7 +20,7 @@ public class NaiveDifferential {
             }
         }
         scan.close();
-        return null;
+        return "Not in diff, Searched DB";
     }
 
 }

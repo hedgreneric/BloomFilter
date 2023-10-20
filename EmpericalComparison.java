@@ -24,6 +24,8 @@ public class EmpericalComparison {
         naive.retrieveRecord(key);
         end = System.nanoTime();
         long naiveDuration = (start - end);
+        System.out.println("Bloom Duration: " + bloomDuration);
+        System.out.println("Naive Duration: " + naiveDuration);
         return bloomDuration > naiveDuration;
     }
 }

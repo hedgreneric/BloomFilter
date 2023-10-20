@@ -47,6 +47,6 @@ public class BloomDifferential {
             }
             scan.close();
         }
-        return null;
+        return "Not in bloom filter, searched DB";
     }
 }
