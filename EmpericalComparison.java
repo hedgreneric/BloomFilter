@@ -19,11 +19,11 @@ public class EmpericalComparison {
         long start = System.nanoTime();
         System.out.println(bloom.retrieveRecord(key));
         long end = System.nanoTime();
-        long bloomDuration = (start - end);
+        long bloomDuration = (end - start);
         start = System.nanoTime();
         System.out.println(naive.retrieveRecord(key));
         end = System.nanoTime();
-        long naiveDuration = (start - end);
+        long naiveDuration = (end - start);
         System.out.println("Bloom Duration: " + bloomDuration);
         System.out.println("Naive Duration: " + naiveDuration);
         return bloomDuration > naiveDuration;
