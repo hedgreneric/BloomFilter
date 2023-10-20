@@ -36,11 +36,14 @@ public class BloomDifferential {
     }
 
     public String retrieveRecord(String key) throws FileNotFoundException {
+        key = key.toLowerCase();
         if(filter.appears(key)){
             Scanner scan = new Scanner(diff);
             while (scan.hasNextLine()){
                 String record = scan.nextLine();
-                String elementInRecord = scan.next()+ " " + scan.next() + " " + scan.next() + " " + scan.next();
+                record = record.toLowerCase();
+                String[] recordElements = record.split(" ");
+                String elementInRecord = recordElements[0] + " " + recordElements[1] + " " + recordElements[2] + " " + recordElements[3];
                 if (elementInRecord.equals(key)){
                     return record;
                 }
