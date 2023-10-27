@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.BitSet;
 
 import static java.lang.Math.log;
 
@@ -39,29 +40,22 @@ public class Statistics {
             throw new IllegalArgumentException("The filters must have the same size and number of hash functions");
         }
 
+        BitSet b1 = f1.bitArray;
+        BitSet b2 = f2.bitArray;
+        BitSet b = (BitSet) b1.clone();
+        b.and(b2);
+
         int m = f1.filterSize();
         int k = (int) Math.ceil(f1.numHashes());
-        int Z1 = 0;
-        int Z2 = 0;
-        int Z = 0;
+        int Z1 = m - b1.cardinality();
+        int Z2 = m - b2.cardinality();
+        int Z = m - b.cardinality();
 
-        for (int i = 0; i < m; i++) {
-            if (!f1.getBit(i)) {
-                Z1++;
-            }
-            if (!f2.getBit(i)) {
-                Z2++;
-            }
-            if (!f1.getBit(i) && !f2.getBit(i)) {
-                Z++;
-            }
-        }
-        BigDecimal numerator = BigDecimal.valueOf(((long) m * (Z1 + Z2 - Z)));
-        BigDecimal denominator = BigDecimal.valueOf(((long) Z1 * Z2));
-        BigDecimal u = numerator.divide(denominator, 5, RoundingMode.HALF_UP);
-        double logNum = Math.log(u.doubleValue());
-        double logDenom = Math.log(1 - ((double) 1 / m));
-        double logs = logNum / logDenom;
-        return logs / (double) -k;
+        double numerator = m * (Z1 + Z2 - Z);
+        double denominator = Z1 * Z2;
+        double u = numerator / denominator;
+        double logNum = Math.log(u);
+        double logDen = -k * Math.log(1 - ((double) 1 / m));
+        return logNum / logDen;
     }
 }
