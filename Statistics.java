@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.BitSet;
 
@@ -47,14 +48,19 @@ public class Statistics {
 
         int m = f1.filterSize();
         int k = (int) Math.ceil(f1.numHashes());
-        int Z1 = m - b1.cardinality();
-        int Z2 = m - b2.cardinality();
-        int Z = m - b.cardinality();
+        BigInteger Z1 = BigInteger.valueOf(m - b1.cardinality());
+        BigInteger Z2 = BigInteger.valueOf(m - b2.cardinality());
+        BigInteger Z = BigInteger.valueOf(m - b.cardinality());
 
-        double numerator = m * (Z1 + Z2 - Z);
-        double denominator = Z1 * Z2;
-        double u = numerator / denominator;
-        double logNum = Math.log(u);
+        BigInteger e = Z1.add(Z2).subtract(Z);
+        BigInteger numerator = BigInteger.valueOf(m).multiply(e);
+        BigInteger denominator = Z1.multiply(Z2);
+
+        BigDecimal num = new BigDecimal(numerator);
+        BigDecimal den = new BigDecimal(denominator);
+
+        BigDecimal u = num.divide(den, 5 ,RoundingMode.HALF_UP);
+        double logNum = Math.log(u.doubleValue());
         double logDen = -k * Math.log(1 - ((double) 1 / m));
         return logNum / logDen;
     }

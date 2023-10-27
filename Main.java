@@ -13,7 +13,7 @@ public class Main {
 
 
         BloomFilterFNV bf2 = new BloomFilterFNV(20000, 10);
-        for (int i = 500; i < 20000; i++){
+        for (int i = 5000; i < 20000; i++){
             String word = "hi" + i;
             bf2.add(word);
         }
