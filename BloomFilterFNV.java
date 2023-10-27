@@ -12,10 +12,10 @@ public class BloomFilterFNV {
 
     public int dataSize;
 
-    static BigInteger offsetBasis = new BigInteger("14695981039346656037");
-    static BigInteger fnvPrime = new BigInteger("109951168211");
-
-    ArrayList<String> items = new ArrayList<String>();
+//    static BigInteger offsetBasis = new BigInteger("14695981039346656037");
+//    static BigInteger fnvPrime = new BigInteger("109951168211");
+    private static final long FNV_64_INIT = 0xcbf29ce484222325L;
+    private static final long FNV_64_PRIME = 0x100000001b3L;
 
 
     public BloomFilterFNV(int setSize, int bitsPerElement) {
@@ -31,10 +31,9 @@ public class BloomFilterFNV {
             dataSize++;
         }
         for(int i = 0; i < numHashes(); i++){
-            int index = fnvHash(s, i);
+            int index = (int) fnvHash(s, i);
             bitArray.set(index);
         }
-        items.add(s);
     }
 
     public boolean appears (String s){
@@ -43,7 +42,7 @@ public class BloomFilterFNV {
         int finalIndex = 0;
         int numTimes = 0;
         for(int i = 0; i < numHashes(); i++){
-            int index = fnvHash(s, i);
+            int index = (int) fnvHash(s, i);
             if (this.getBit(index)){
                 numTimes++;
             }
@@ -68,16 +67,17 @@ public class BloomFilterFNV {
         return bitArray.get(j);
     }
 
-    public int fnvHash (String s, int i) {
+    public long fnvHash (String s, int i) {
         String data;
-        BigInteger hash = offsetBasis;
+        long hash = FNV_64_INIT;
         for (int j = 0; j < s.length(); j++){
             char character = s.charAt(j);
             data = String.valueOf(character + i);
             int hashcode = data.hashCode();
-            hash = BigInteger.valueOf(hashcode).xor(hash);
-            hash = hash.multiply(fnvPrime);
+            hash ^= hashcode;
+            hash *= FNV_64_PRIME;
         }
-        return Math.abs(hash.intValue()%filterSize());
+        hash = Math.abs(hash%filterSize());
+        return hash;
     }
 }
