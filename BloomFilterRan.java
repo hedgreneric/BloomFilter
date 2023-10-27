@@ -12,13 +12,15 @@ public class BloomFilterRan {
     public BitSet bitArray;
 
     public int dataSize;
-    ArrayList<String> items = new ArrayList<String>();
+
+    public int randomPrime;
 
     public BloomFilterRan(int setSize, int bitsPerElement) {
         this.setSize = setSize;
         this.bitsPerElement = bitsPerElement;
         bitArray = new BitSet(filterSize());
         dataSize = 0;
+        randomPrime = findPrimeLargerThanM(this.filterSize());
     }
 
     public void add (String s){
@@ -27,10 +29,9 @@ public class BloomFilterRan {
             dataSize++;
         }
         for(int i = 0; i < numHashes(); i++){
-            int index = ranHash(s, i);
+            int index = (int) ranHash(s, i);
             bitArray.set(index);
         }
-        items.add(s);
     }
 
     public boolean appears (String s){
@@ -39,7 +40,7 @@ public class BloomFilterRan {
         int finalIndex = 0;
         int numTimes = 0;
         for(int i = 0; i < numHashes(); i++){
-            int index = ranHash(s, i);
+            int index = (int) ranHash(s, i);
             if (this.getBit(index)){
                    numTimes++;
             }
@@ -76,25 +77,24 @@ public class BloomFilterRan {
 //        return (a * x + b)%p;
 //    }
 
-    public int ranHash (String s, int i) {
+    public long ranHash (String s, int i) {
         int m = this.filterSize();
-        int p = findPrimeLargerThanM(m, i);
-        int x = s.hashCode()%p;
-        BigInteger y = BigInteger.valueOf(Math.abs(x));
-        Random rand = new Random(i);
-        BigInteger a = BigInteger.valueOf(rand.nextInt(p));
-        BigInteger b = BigInteger.valueOf(rand.nextInt(p));
+        int x = s.hashCode();
+        long y = (Math.abs(x));
+        Random rand = new Random(i * x);
+        long a = rand.nextInt(randomPrime);
+        long b = rand.nextInt(randomPrime);
 
-        return (a.multiply(y).add(b).mod(BigInteger.valueOf(p)).intValue());
+        return ((a*y) + b)%randomPrime;
     }
 
-    public int findPrimeLargerThanM(int m, int i){
-        Random rand = new Random(i);
-        int prime = rand.nextInt(m/2) + m;
-        while(!isPrime(prime)){
-            prime = rand.nextInt(m/2) + m;
+    public int findPrimeLargerThanM(int m){
+        Random rand = new Random(m);
+        BigInteger prime = BigInteger.valueOf(rand.nextInt(m/10) + m);
+        while(!prime.isProbablePrime(100)){
+            prime = BigInteger.valueOf(rand.nextInt(m/10) + m);
         }
-        return prime;
+        return prime.intValue();
     }
 
     public boolean isPrime(int n){
