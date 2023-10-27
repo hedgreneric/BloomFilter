@@ -81,10 +81,10 @@ public class BloomFilterRanPlus {
     }
 
     public int findPrimeLargerThanM(int m){
-        Random rand = new Random();
-        BigInteger prime = BigInteger.valueOf(rand.nextInt(1000) + m);
+        Random rand = new Random(m);
+        BigInteger prime = BigInteger.valueOf(rand.nextInt(m/10) + m);
         while(!prime.isProbablePrime(100)){
-            prime = BigInteger.valueOf(rand.nextInt(1000) + m);
+            prime = BigInteger.valueOf(rand.nextInt(m/10) + m);
         }
         return prime.intValue();
     }

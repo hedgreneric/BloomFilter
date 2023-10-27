@@ -81,7 +81,7 @@ public class BloomFilterRan {
         int m = this.filterSize();
         int x = s.hashCode();
         long y = (Math.abs(x));
-        Random rand = new Random(i * x);
+        Random rand = new Random(i * y);
         long a = rand.nextInt(randomPrime);
         long b = rand.nextInt(randomPrime);
 

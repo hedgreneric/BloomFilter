@@ -1,14 +1,15 @@
 public class Main2 {
 
     public static void main(String args[]){
-        BloomFilterFNV bf = new BloomFilterFNV(5000, 10);
-        for (int i = 0; i < 5000; i++){
+        BloomFilterRan bf = new BloomFilterRan(50000, 10);
+        for (int i = 0; i < 50000; i++){
             String word = "hi" + i;
             bf.add(word);
         }
 
+
         FalsePositives fp = new FalsePositives(bf);
-        for (int i = 0; i < 1000; i++){
+        for (int i = 0; i < 10000; i++){
             String word = "hello" + i;
             fp.check(word, bf);
         }
