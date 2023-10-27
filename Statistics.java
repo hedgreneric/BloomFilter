@@ -1,5 +1,7 @@
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.BitSet;
 
 import static java.lang.Math.log;
 
@@ -39,29 +41,27 @@ public class Statistics {
             throw new IllegalArgumentException("The filters must have the same size and number of hash functions");
         }
 
+        BitSet b1 = f1.bitArray;
+        BitSet b2 = f2.bitArray;
+        BitSet b = (BitSet) b1.clone();
+        b.and(b2);
+
         int m = f1.filterSize();
         int k = (int) Math.ceil(f1.numHashes());
-        int Z1 = 0;
-        int Z2 = 0;
-        int Z = 0;
+        BigInteger Z1 = BigInteger.valueOf(m - b1.cardinality());
+        BigInteger Z2 = BigInteger.valueOf(m - b2.cardinality());
+        BigInteger Z = BigInteger.valueOf(m - b.cardinality());
 
-        for (int i = 0; i < m; i++) {
-            if (!f1.getBit(i)) {
-                Z1++;
-            }
-            if (!f2.getBit(i)) {
-                Z2++;
-            }
-            if (!f1.getBit(i) && !f2.getBit(i)) {
-                Z++;
-            }
-        }
-        BigDecimal numerator = BigDecimal.valueOf(((long) m * (Z1 + Z2 - Z)));
-        BigDecimal denominator = BigDecimal.valueOf(((long) Z1 * Z2));
-        BigDecimal u = numerator.divide(denominator, 5, RoundingMode.HALF_UP);
+        BigInteger e = Z1.add(Z2).subtract(Z);
+        BigInteger numerator = BigInteger.valueOf(m).multiply(e);
+        BigInteger denominator = Z1.multiply(Z2);
+
+        BigDecimal num = new BigDecimal(numerator);
+        BigDecimal den = new BigDecimal(denominator);
+
+        BigDecimal u = num.divide(den, 5 ,RoundingMode.HALF_UP);
         double logNum = Math.log(u.doubleValue());
-        double logDenom = Math.log(1 - ((double) 1 / m));
-        double logs = logNum / logDenom;
-        return logs / (double) -k;
+        double logDen = -k * Math.log(1 - ((double) 1 / m));
+        return logNum / logDen;
     }
 }

@@ -1,8 +1,8 @@
 public class Main2 {
 
     public static void main(String args[]){
-        BloomFilterFNV bf = new BloomFilterFNV(100, 10);
-        for (int i = 0; i < 100; i++){
+        BloomFilterFNV bf = new BloomFilterFNV(5000, 10);
+        for (int i = 0; i < 5000; i++){
             String word = "hi" + i;
             bf.add(word);
         }
