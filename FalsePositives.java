@@ -18,7 +18,7 @@ public class FalsePositives<T> {
      */
     public void check(String s, BloomFilterFNV bf) {
         totalChecks++;
-        if (bf.appears(s) && !bf.items.contains(s)) {
+        if (bf.appears(s)) {
             falsePositives++;
         }
     }
@@ -28,7 +28,7 @@ public class FalsePositives<T> {
      */
     public void check(String s, BloomFilterRan bf) {
         totalChecks++;
-        if (bf.appears(s) && !bf.items.contains(s)) {
+        if (bf.appears(s)) {
             falsePositives++;
         }
     }
@@ -38,7 +38,7 @@ public class FalsePositives<T> {
      */
     public void check(String s, BloomFilterRanPlus bf) {
         totalChecks++;
-        if (bf.appears(s) && !bf.items.contains(s)) {
+        if (bf.appears(s)) {
             falsePositives++;
         }
     }
@@ -48,7 +48,7 @@ public class FalsePositives<T> {
      */
     public void check(String s, MultiMultiBloomFilter bf) {
         totalChecks++;
-        if (bf.appears(s) && !bf.items.contains(s)) {
+        if (bf.appears(s)) {
             falsePositives++;
         }
     }

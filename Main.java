@@ -4,12 +4,24 @@ import java.io.FileNotFoundException;
 public class Main {
 
     public static void main(String args[]) throws FileNotFoundException {
-        BloomFilterFNV bf = new BloomFilterFNV(10000, 10);
-        for (int i = 0; i < 10000; i++){
+        MultiMultiBloomFilter bf = new MultiMultiBloomFilter(100000, 10);
+        for (int i = 0; i < 100000; i++){
             String word = "hi" + i;
             bf.add(word);
+            System.out.println(word);
         }
         System.out.println(bf.appears("hi100"));
+
+        FalsePositives fp = new FalsePositives(bf);
+        for (int i = 0; i < 100000; i++){
+            String word = "hello" + i;
+            fp.check(word, bf);
+        }
+
+        System.out.println("Report: ");
+        System.out.println("Checks: " + fp.getTotalChecks());
+        System.out.println("False Positives: " + fp.getFalsePositives());
+        System.out.println("False Positive Rate: " + fp.getFalsePositiveRate());
 //
 //
 //        BloomFilterRanPlus bf2 = new BloomFilterRanPlus(1000, 10);
